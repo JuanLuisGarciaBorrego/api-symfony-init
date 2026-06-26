@@ -202,9 +202,15 @@ else
     if [ ! -f composer.json ]; then
         docker-compose exec -T php rm -rf /tmp/symfony_project
         docker-compose exec -T php composer create-project "symfony/skeleton:${SYMFONY_VERSION}.*" /tmp/symfony_project
-        docker-compose exec -T php cp /var/www/html/.env /tmp/template_project_env
         docker-compose exec -T php bash -lc 'shopt -s dotglob && cp -a /tmp/symfony_project/* /var/www/html/'
-        docker-compose exec -T php cp /tmp/template_project_env /var/www/html/.env
+
+        if [ -f "$PROJECT_DIR/.env" ]; then
+            container_id="$(docker-compose ps -q php)"
+            docker cp "$PROJECT_DIR/.env" "$container_id:/var/www/html/.env"
+        else
+            echo "No se encontró .env en $PROJECT_DIR; se omite la copia al contenedor."
+        fi
+
         docker-compose exec -T php rm -rf /tmp/symfony_project
     else
         echo "composer.json ya existe; no se pisa el proyecto Symfony."
