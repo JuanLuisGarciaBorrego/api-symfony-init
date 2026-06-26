@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "junstyle.php-cs-fixer",
+    "valeryanm.vscode-phpsab",
+    "xdebug.php-debug",
+    "whatwedo.twig",
+    "TheNouillet.symfony-vscode",
+    "ms-azuretools.vscode-docker",
+    "pkief.material-icon-theme",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

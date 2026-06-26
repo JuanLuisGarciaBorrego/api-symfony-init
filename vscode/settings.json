@@ -1,0 +1,21 @@
+{
+  "files.exclude": {
+    "**/var": true
+  },
+  "search.exclude": {
+    "**/vendor": true,
+    "**/var": true,
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/vendor/**": true,
+    "**/var/**": true,
+    "**/node_modules/**": true
+  },
+  "php.validate.enable": false,
+  "intelephense.environment.phpVersion": "8.4.0",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.fontFamily": "JetBrains Mono, Fira Code, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true
+}

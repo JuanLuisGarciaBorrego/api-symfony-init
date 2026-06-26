@@ -1,0 +1,19 @@
+# PHP / Symfony
+bmewburn.vscode-intelephense-client
+junstyle.php-cs-fixer
+valeryanm.vscode-phpsab
+xdebug.php-debug
+whatwedo.twig
+TheNouillet.symfony-vscode
+
+# Docker
+ms-azuretools.vscode-docker
+
+# UI / comodidad
+pkief.material-icon-theme
+eamodio.gitlens
+editorconfig.editorconfig
+
+# React / Next.js cuando el proyecto lo necesite
+dbaeumer.vscode-eslint
+esbenp.prettier-vscode

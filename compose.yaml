@@ -1,0 +1,87 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.5}
+    command: ["sh", "-c", "tail -f /dev/null"]
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - composer-cache:/tmp/composer
+    depends_on:
+      - mariadb
+      - redis
+      - rabbitmq
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  mariadb:
+    image: mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: app
+      MARIADB_USER: app
+      MARIADB_PASSWORD: app
+    ports:
+      - "${MARIADB_PORT:-3333}:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+  mercure:
+    image: dunglas/mercure
+    ports:
+      - "${MERCURE_PORT:-9090}:80"
+    environment:
+      SERVER_NAME: ":80"
+      MERCURE_PUBLISHER_JWT_KEY: "!ChangeThisMercureHubJWTSecretKey!"
+      MERCURE_SUBSCRIBER_JWT_KEY: "!ChangeThisMercureHubJWTSecretKey!"
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins *
+        anonymous
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  composer-cache:
+  mariadb-data:
+  caddy-data:
+  caddy-config:
